@@ -1,4 +1,4 @@
-package com.vinishchoudhary.task_tracker_cli.constants;
+package com.vinishchoudhary.task_tracker_cli.domain;
 
 
 import lombok.Getter;

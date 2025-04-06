@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.vinishchoudhary.task_tracker_cli.constants.TaskStatus;
+import com.vinishchoudhary.task_tracker_cli.domain.TaskStatus;
 import com.vinishchoudhary.task_tracker_cli.domain.Task;
 import com.vinishchoudhary.task_tracker_cli.exception.TaskNotFoundException;
 import com.vinishchoudhary.task_tracker_cli.repositories.TaskRepository;
@@ -47,12 +47,12 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     @Override
-    public List<Task> getAllTask() {
+    public List<Task> getAllTasks() {
         return tasks;
     }
 
     @Override
-    public List<Task> getTaskByStatus(String status){
+    public List<Task> getTasksByStatus(String status){
         return tasks.stream().filter(task -> task.getStatus().equalsStatus(status)).toList();
     }
 

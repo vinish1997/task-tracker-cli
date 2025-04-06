@@ -1,8 +1,9 @@
 package com.vinishchoudhary.task_tracker_cli.services;
 
-import com.vinishchoudhary.task_tracker_cli.constants.TaskStatus;
+import com.vinishchoudhary.task_tracker_cli.domain.TaskStatus;
 import com.vinishchoudhary.task_tracker_cli.domain.Task;
 import com.vinishchoudhary.task_tracker_cli.repositories.TaskRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.command.annotation.Option;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Command(command = "task-cli")
+@Slf4j
 public class TaskService {
 
     @Autowired
@@ -18,8 +20,8 @@ public class TaskService {
 
     @Command(command = "list")
     public List<Task> getAllTasks(@Option(required = false) String status){
-        if (Objects.nonNull(status)) return taskRepository.getTaskByStatus(status);
-        return taskRepository.getAllTask();
+        if (Objects.nonNull(status)) return taskRepository.getTasksByStatus(status);
+        return taskRepository.getAllTasks();
     }
 
     @Command(command = "add")
@@ -35,12 +37,22 @@ public class TaskService {
 
     @Command(command = "mark-in-progress")
     public Task markInProgress(@Option(required = true) Integer id){
-        return taskRepository.updateTaskStatus(id, TaskStatus.IN_PROGRESS);
+        try {
+            return taskRepository.updateTaskStatus(id, TaskStatus.IN_PROGRESS);
+        } catch (RuntimeException e) {
+            log.error("Task not found", e);
+            return null;
+        }
     }
 
     @Command(command = "mark-done")
     public Task markDone(@Option(required = true) Integer id){
-        return taskRepository.updateTaskStatus(id, TaskStatus.DONE);
+        try {
+            return taskRepository.updateTaskStatus(id, TaskStatus.DONE);
+        } catch (RuntimeException e) {
+            log.error("Task not found", e);
+            return null;
+        }
     }
 
     @Command(command = "delete")
