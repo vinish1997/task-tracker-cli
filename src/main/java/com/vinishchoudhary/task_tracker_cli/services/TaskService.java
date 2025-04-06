@@ -64,4 +64,9 @@ public class TaskService {
             return "Not able to delete";
         }
     }
+
+    @Command(command = "get")
+    public Task getTask(@Option(required = true) Integer id){
+        return taskRepository.getTaskById(id);
+    }
 }
